@@ -32,6 +32,10 @@ public class RegistrationController {
 
     @GetMapping("/registration/report")
     public ResponseEntity<List<RegistrationReportItem>> report() {
+        List<RegistrationReportItem> items = registrationService.generateReport();
+        return ResponseEntity.ok(items);
+    }
+    /*public ResponseEntity<List<RegistrationReportItem>> report() {
         List<RegistrationReportItem> items = new ArrayList<>();
 
         // TODO: Implementar a Questão 4 - Relatório de Cursos Mais Acessados aqui...
@@ -62,6 +66,6 @@ public class RegistrationController {
         ));
 
         return ResponseEntity.ok(items);
-    }
+    }*/
 
 }

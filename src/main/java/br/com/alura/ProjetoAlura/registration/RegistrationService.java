@@ -5,6 +5,8 @@ import br.com.alura.ProjetoAlura.course.CourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RegistrationService {
@@ -40,5 +42,24 @@ public class RegistrationService {
         registration.setRegistrationDate(LocalDate.now());
 
         registrationRepository.save(registration);
+    }
+
+    public List<RegistrationReportItem> generateReport() {
+        List<Object[]> results = registrationRepository.findMostPopularCourses();
+
+        List<RegistrationReportItem> reportItems = new ArrayList<>();
+
+        for (Object[] row : results) {
+            String courseName = (String) row[0];
+            String courseCode = (String) row[1];
+            String instructorName = (String) row[2];
+            String instructorEmail = (String) row[3];
+            Long totalRegistrations = ((Number) row[4]).longValue();
+
+            RegistrationReportItem item = new RegistrationReportItem(courseName, courseCode, instructorName, instructorEmail, totalRegistrations);
+            reportItems.add(item);
+        }
+
+        return reportItems;
     }
 }
