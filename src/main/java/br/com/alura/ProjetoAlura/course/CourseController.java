@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @RestController
 public class CourseController {
 
@@ -51,10 +54,28 @@ public class CourseController {
     }
 
     @PostMapping("/course/{code}/inactive")
-    public ResponseEntity createCourse(@PathVariable("code") String courseCode) {
-        // TODO: Implementar a Questão 2 - Inativação de Curso aqui...
+    public ResponseEntity<String> deactivateCourse(@PathVariable("code") String courseCode) {
+        try {
+            Optional<Course> courseOptional = courseService.findByCode(courseCode);
+            if (courseOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Course not found with the provided code.");
+            }
 
-        return ResponseEntity.ok().build();
+            Course course = courseOptional.get();
+
+            course.setStatus(Course.Status.INACTIVE);
+
+            course.setInactiveDate(LocalDateTime.now());
+
+            courseService.save(course);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Course has been successfully deactivated.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while deactivating the course.");
+        }
     }
 
 }
