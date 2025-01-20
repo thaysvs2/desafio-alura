@@ -14,11 +14,20 @@ import java.util.List;
 @RestController
 public class RegistrationController {
 
-    @PostMapping("/registration/new")
-    public ResponseEntity createCourse(@Valid @RequestBody NewRegistrationDTO newRegistration) {
-        // TODO: Implementar a Questão 3 - Criação de Matrículas aqui...
+    private final RegistrationService registrationService;
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    @PostMapping("/registration/new")
+    public ResponseEntity<?> createCourse(@Valid @RequestBody NewRegistrationDTO newRegistration) {
+        try {
+            registrationService.registerStudent(newRegistration);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping("/registration/report")

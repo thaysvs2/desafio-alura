@@ -90,4 +90,8 @@ public class Course {
     public void setInactiveDate(LocalDateTime inactiveDate) {
         this.inactiveDate = inactiveDate;
     }
+
+    public boolean isActive() {
+        return this.status == Status.ACTIVE;
+    }
 }
