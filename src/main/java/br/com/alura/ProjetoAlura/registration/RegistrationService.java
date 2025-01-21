@@ -2,6 +2,9 @@ package br.com.alura.ProjetoAlura.registration;
 
 import br.com.alura.ProjetoAlura.course.Course;
 import br.com.alura.ProjetoAlura.course.CourseRepository;
+import br.com.alura.ProjetoAlura.user.Role;
+import br.com.alura.ProjetoAlura.user.UserRepository;
+import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,10 +16,13 @@ public class RegistrationService {
 
     private final RegistrationRepository registrationRepository;
     private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
-    public RegistrationService(RegistrationRepository registrationRepository, CourseRepository courseRepository) {
+
+    public RegistrationService(RegistrationRepository registrationRepository, CourseRepository courseRepository, UserRepository userRepository) {
         this.registrationRepository = registrationRepository;
         this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
     }
 
     public void registerStudent(NewRegistrationDTO newRegistration) {
@@ -25,6 +31,15 @@ public class RegistrationService {
 
         if (!course.isActive()) {
             throw new IllegalArgumentException("Curso não está ativo.");
+        }
+
+        boolean isInstructor = userRepository.findByEmail(newRegistration.getStudentEmail())
+                .map(user -> user.getRole() == Role.INSTRUCTOR)  // Comparando diretamente com o enum Role.INSTRUCTOR
+                .orElse(false);
+
+        // Se for instrutor, lança uma exceção
+        if (isInstructor) {
+            throw new IllegalArgumentException("E-mail pertence a um instrutor. Não é permitido registrar instrutores.");
         }
 
         boolean alreadyRegistered = registrationRepository.existsByStudentEmailAndCourseCode(
@@ -45,16 +60,15 @@ public class RegistrationService {
     }
 
     public List<RegistrationReportItem> generateReport() {
-        List<Object[]> results = registrationRepository.findMostPopularCourses();
-
+        List<Tuple> results = registrationRepository.findMostPopularCourses();
         List<RegistrationReportItem> reportItems = new ArrayList<>();
 
-        for (Object[] row : results) {
-            String courseName = (String) row[0];
-            String courseCode = (String) row[1];
-            String instructorName = (String) row[2];
-            String instructorEmail = (String) row[3];
-            Long totalRegistrations = ((Number) row[4]).longValue();
+        for (Tuple tuple : results) {
+            String courseName = tuple.get(0, String.class);
+            String courseCode = tuple.get(1, String.class);
+            String instructorName = tuple.get(2, String.class);
+            String instructorEmail = tuple.get(3, String.class);
+            Long totalRegistrations = tuple.get(4, Long.class);
 
             RegistrationReportItem item = new RegistrationReportItem(courseName, courseCode, instructorName, instructorEmail, totalRegistrations);
             reportItems.add(item);
