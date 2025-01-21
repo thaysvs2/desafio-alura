@@ -34,10 +34,9 @@ public class RegistrationService {
         }
 
         boolean isInstructor = userRepository.findByEmail(newRegistration.getStudentEmail())
-                .map(user -> user.getRole() == Role.INSTRUCTOR)  // Comparando diretamente com o enum Role.INSTRUCTOR
+                .map(user -> user.getRole() == Role.INSTRUCTOR)
                 .orElse(false);
 
-        // Se for instrutor, lança uma exceção
         if (isInstructor) {
             throw new IllegalArgumentException("E-mail pertence a um instrutor. Não é permitido registrar instrutores.");
         }
